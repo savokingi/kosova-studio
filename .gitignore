@@ -6,3 +6,5 @@ image-contact-sheet.jpg
 qa-*.png
 qa-*.jpg
 *.tar.gz
+.openai/
+github-api.ps1

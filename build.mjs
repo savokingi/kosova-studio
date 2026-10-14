@@ -1,4 +1,5 @@
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 const root=new URL('./dist/',import.meta.url);
 const basePath='/' + (process.env.SITE_BASE_PATH||'').replace(/^\/+|\/+$/g,'') + '/';
 const siteBase=basePath==='//'?'/':basePath;
@@ -73,11 +74,14 @@ await emit('contact','Контакты',contact());await emit('selection','Мо�
 await writeFile(new URL('404.html',root),await readFile(new URL('404/index.html',root),'utf8'));
 await writeFile(new URL('materials-data.json',root),JSON.stringify(materials));
 await writeFile(new URL('assets/favicon.svg',root),'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#263b50"/><text x="32" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="52" fill="#f6f3ed">K</text></svg>');
+const styleVersion=createHash('sha256').update(await readFile(new URL('styles.css',root))).digest('hex').slice(0,10);
+const scriptVersion=createHash('sha256').update(await readFile(new URL('app.js',root))).digest('hex').slice(0,10);
 for (const directory of ['', 'projects', ...projects.map(p=>`projects/${p.slug}`), 'services', ...services.map(s=>`services/${s.slug}`), 'materials', ...materials.map(m=>`materials/${m.id}`), 'studio','designers','journal',...articles.map(a=>`journal/${a.slug}`),'contact','selection','404']) {
  const file=new URL(directory?`${directory}/index.html`:'index.html',root);
  let html=await readFile(file,'utf8');
  html=html.replace('<meta name="viewport"',`<meta name="site-base" content="${siteBase}"><meta name="viewport"`);
  html=html.replace(/(href|src|data-preview)="\/(?!\/)/g,`$1="${siteBase}`);
+ html=html.replace(`href="${siteBase}styles.css"`,`href="${siteBase}styles.css?v=${styleVersion}"`).replace(`src="${siteBase}app.js"`,`src="${siteBase}app.js?v=${scriptVersion}"`);
  await writeFile(file,html);
 }
 await writeFile(new URL('404.html',root),await readFile(new URL('404/index.html',root),'utf8'));

@@ -27,5 +27,6 @@
 .site-header{position:sticky;top:0}.masthead-name{font-size:clamp(100px,21vw,345px)}
 .material-story{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.material-story-copy{min-width:0}
 @media(max-width:800px){.masthead-name{font-size:23vw}}
+@media(min-width:521px) and (max-width:800px){.material-story-copy h2{font-size:clamp(38px,6.5vw,52px)}.process-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.masthead-name{font-size:24.3vw}.material-story{grid-template-columns:minmax(0,1fr)}.material-story-copy h2{font-size:clamp(46px,14.4vw,66px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.js [data-reveal]{opacity:1;transform:none}}
